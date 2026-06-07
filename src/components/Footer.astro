@@ -1,0 +1,63 @@
+---
+import { site } from "../data/site";
+const year = 2026;
+---
+
+<!-- Contact band (Peak–End: a memorable, inviting close) -->
+<section
+  id="contact"
+  class="relative z-10 mx-auto max-w-(--container-screen) px-4 py-24 md:px-16"
+>
+  <div
+    class="glass-card reveal relative overflow-hidden rounded-[40px] px-8 py-16 text-center md:px-16 md:py-24"
+  >
+    <div
+      class="pointer-events-none absolute -top-1/2 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]"
+    >
+    </div>
+    <div class="relative z-10 mx-auto max-w-2xl space-y-8">
+      <h2
+        class="text-4xl font-black tracking-tight text-white md:text-6xl"
+      >
+        Let's build something <span class="text-gradient">intelligent</span>.
+      </h2>
+      <p class="text-lg font-light text-on-surface-variant">
+        Open to roles, collaborations, and ambitious AI products. The fastest way
+        to reach me is email.
+      </p>
+      <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href={`mailto:${site.email}`} class="btn-primary">
+          Email Me
+          <span class="material-symbols-outlined">arrow_outward</span>
+        </a>
+        <span class="text-sm text-on-surface-variant">{site.email}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Slim footer -->
+<footer class="relative z-10 mt-12 w-full border-t border-white/5 bg-[#050507]">
+  <div
+    class="mx-auto flex max-w-(--container-screen) flex-col items-center justify-between gap-8 px-4 py-12 md:flex-row md:px-16"
+  >
+    <div class="text-xl font-black tracking-tighter text-white">
+      {site.brand}
+    </div>
+    <div class="text-sm font-light text-on-surface-variant">
+      © {year} {site.brand}. Built for the future of intelligence.
+    </div>
+    <div class="flex gap-8">
+      {
+        site.socials.map((s) => (
+          <a
+            href={s.href}
+            class="text-sm tracking-wide text-on-surface-variant transition-colors duration-300 hover:text-white"
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>

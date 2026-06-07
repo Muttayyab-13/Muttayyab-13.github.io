@@ -1,0 +1,55 @@
+---
+import { about } from "../data/site";
+
+const accentText = {
+  primary: "text-primary",
+  secondary: "text-secondary",
+};
+---
+
+<section
+  id="about"
+  class="relative z-10 mx-auto max-w-(--container-screen) px-4 py-24 md:px-16"
+>
+  <div
+    class="glass-card reveal relative overflow-hidden rounded-[40px] p-10 md:p-16"
+  >
+    <div
+      class="pointer-events-none absolute bottom-0 left-0 h-full w-full bg-gradient-to-tr from-primary/10 via-transparent to-transparent"
+    >
+    </div>
+
+    <div class="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-12">
+      <div class="space-y-8 lg:col-span-7">
+        <h2 class="text-4xl font-black tracking-tight text-white md:text-5xl">
+          {about.heading}
+        </h2>
+        <p class="text-lg font-light leading-relaxed text-on-surface-variant">
+          {about.bio}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 content-center gap-8 lg:col-span-5">
+        {
+          about.columns.map((col) => (
+            <div class="space-y-4">
+              <h4
+                class:list={[
+                  "text-sm font-bold uppercase tracking-[0.2em]",
+                  accentText[col.accent],
+                ]}
+              >
+                {col.heading}
+              </h4>
+              <ul class="space-y-3 text-base font-light text-on-surface-variant">
+                {col.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

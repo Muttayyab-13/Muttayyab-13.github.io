@@ -1,0 +1,96 @@
+---
+// Self-contained animated "neural network" hero visual.
+// No external assets — pure inline SVG + CSS, respects prefers-reduced-motion.
+
+// Node coordinates on a 400x400 viewBox.
+const nodes = [
+  { x: 200, y: 200, r: 9, core: true },
+  { x: 90, y: 95, r: 5 },
+  { x: 310, y: 80, r: 6 },
+  { x: 60, y: 250, r: 5 },
+  { x: 340, y: 230, r: 6 },
+  { x: 175, y: 60, r: 4 },
+  { x: 130, y: 330, r: 5 },
+  { x: 300, y: 320, r: 5 },
+  { x: 250, y: 130, r: 4 },
+  { x: 120, y: 180, r: 4 },
+  { x: 285, y: 200, r: 4 },
+];
+
+// Edges connect the core (index 0) outward, plus a few cross-links.
+const edges: [number, number][] = [
+  [0, 1], [0, 2], [0, 3], [0, 4], [0, 8], [0, 9], [0, 10],
+  [1, 5], [1, 9], [2, 8], [3, 6], [4, 7], [4, 10], [8, 2], [6, 3], [7, 10],
+];
+---
+
+<div
+  class="animate-float-slow relative aspect-square w-full"
+  aria-hidden="true"
+>
+  <svg
+    viewBox="0 0 400 400"
+    class="h-full w-full"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="edgeGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#7c5cff" />
+        <stop offset="100%" stop-color="#22d3ee" />
+      </linearGradient>
+      <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.9" />
+        <stop offset="100%" stop-color="#7c5cff" stop-opacity="0" />
+      </radialGradient>
+      <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.4" />
+      </filter>
+    </defs>
+
+    <!-- Core ambient glow -->
+    <circle cx="200" cy="200" r="150" fill="url(#coreGlow)" opacity="0.5" />
+
+    <!-- Edges -->
+    <g stroke="url(#edgeGrad)" stroke-width="1.1" opacity="0.5" fill="none">
+      {
+        edges.map(([a, b], i) => (
+          <line
+            x1={nodes[a].x}
+            y1={nodes[a].y}
+            x2={nodes[b].x}
+            y2={nodes[b].y}
+            stroke-dasharray="4 7"
+            style={`animation: dash-flow ${14 + (i % 5) * 4}s linear infinite;`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- Nodes -->
+    <g>
+      {
+        nodes.map((n, i) => (
+          <>
+            <circle
+              cx={n.x}
+              cy={n.y}
+              r={n.r + 4}
+              fill={n.core ? "#7c5cff" : "#22d3ee"}
+              opacity="0.18"
+              filter="url(#soft)"
+            />
+            <circle
+              cx={n.x}
+              cy={n.y}
+              r={n.r}
+              fill={n.core ? "url(#edgeGrad)" : "#cfe9ff"}
+              style={`animation: pulse-node ${
+                3 + (i % 4)
+              }s ease-in-out infinite; animation-delay:${(i % 5) * 0.4}s;`}
+            />
+          </>
+        ))
+      }
+    </g>
+  </svg>
+</div>
