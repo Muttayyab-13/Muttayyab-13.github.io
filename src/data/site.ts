@@ -10,11 +10,16 @@ const EMAIL = "muttayyab13@gmail.com";
 export const site = {
   brand: "MUTTAYYAB.AI",
   name: "Muttayyab Abdurrehman",
+  initials: "MA",
+  navTagline: "AI Engineer · Open to work",
+  available: true,
   role: "AI Engineer · Full-Stack & Generative AI",
   title: "Muttayyab Abdurrehman — AI Engineer",
   description:
     "AI Engineer specializing in LLMs, RAG, computer vision and OCR. I build intelligent document pipelines, RAG systems, and n8n automation, and ship scalable full-stack products with the MERN stack.",
   email: EMAIL,
+  phone: "+92 305 5549222",
+  phoneHref: "tel:+923055549222",
   hero: {
     headlineLead: "Architecting",
     headlineAccent: "Intelligent",
