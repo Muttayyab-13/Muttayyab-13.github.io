@@ -14,11 +14,64 @@
   --color-secondary: #22d3ee; /* cyan */
   --color-tertiary: #ffb780; /* warm amber */
   --color-outline: #2a2730;
+  --color-heading: #ffffff; /* strong heading text — flips in light */
+  --color-overlay: #ffffff; /* hairline borders / subtle fills — flips in light */
 
   --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui,
     -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --container-screen: 1280px;
+}
+
+/* ---------------------------------------------------------------------------
+   Runtime theme variables.
+   Dark is the default (values below). The [data-theme="light"] block flips
+   them. Component classes & color utilities read these via var(), so the
+   entire site re-themes from this one place.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+  --glass-bg: rgb(20 24 31 / 0.7);
+  --glass-bg-hover: rgb(20 24 31 / 0.92);
+  --glass-border: rgb(255 255 255 / 0.1);
+  --glass-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+  --glass-shadow-hover: 0 18px 50px -12px rgb(124 92 255 / 0.4);
+  --surface-overlay: rgb(255 255 255 / 0.05);
+  --surface-overlay-hover: rgb(255 255 255 / 0.1);
+  --border-subtle: rgb(255 255 255 / 0.1);
+  --ghost-text: #ffffff;
+  --grid-line: rgba(255, 255, 255, 0.025);
+  --glow-1: rgb(124 92 255 / 0.15);
+  --glow-2: rgb(34 211 238 / 0.1);
+  --neural-node: #cfe9ff;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* @theme color tokens — flipped */
+  --color-background: #f5f6fb;
+  --color-surface: #ffffff;
+  --color-on-surface: #2e2c3a;
+  --color-on-surface-variant: #5f5c6b;
+  --color-heading: #13111f;
+  --color-overlay: #16131f;
+  --color-outline: #d9d7e4;
+
+  /* runtime vars — flipped */
+  --glass-bg: rgb(255 255 255 / 0.72);
+  --glass-bg-hover: rgb(255 255 255 / 0.95);
+  --glass-border: rgb(18 16 31 / 0.1);
+  --glass-shadow: 0 10px 30px -14px rgb(20 18 50 / 0.14);
+  --glass-shadow-hover: 0 18px 50px -16px rgb(124 92 255 / 0.28);
+  --surface-overlay: rgb(18 16 31 / 0.04);
+  --surface-overlay-hover: rgb(18 16 31 / 0.08);
+  --border-subtle: rgb(18 16 31 / 0.1);
+  --ghost-text: #13111f;
+  --grid-line: rgba(18, 16, 31, 0.05);
+  --glow-1: rgb(124 92 255 / 0.1);
+  --glow-2: rgb(34 211 238 / 0.07);
+  --neural-node: #0891b2;
 }
 
 /* ------------------------------- Base ------------------------------------ */
@@ -35,11 +88,14 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   ::selection {
     background-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
-    color: #fff;
+    color: var(--color-heading);
   }
 }
 
@@ -47,11 +103,15 @@
 
 /* Glassmorphism surface used by every card. */
 .glass-card {
-  background-color: rgb(20 24 31 / 0.7);
+  background-color: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgb(255 255 255 / 0.1);
-  box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .glass-card-hover {
@@ -64,8 +124,8 @@
 .glass-card-hover:hover {
   transform: translateY(-4px);
   border-color: rgb(124 92 255 / 0.4);
-  background-color: rgb(20 24 31 / 0.9);
-  box-shadow: 0 18px 50px -12px rgb(124 92 255 / 0.4);
+  background-color: var(--glass-bg-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 /* Violet → cyan text gradient. */
@@ -112,16 +172,17 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 0.85rem;
-  color: #fff;
-  background-color: rgb(255 255 255 / 0.05);
-  border: 1px solid rgb(255 255 255 / 0.12);
+  color: var(--ghost-text);
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
   transition:
     background-color 0.3s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    color 0.3s ease;
 }
 .btn-ghost:hover {
-  background-color: rgb(255 255 255 / 0.1);
-  border-color: rgb(255 255 255 / 0.3);
+  background-color: var(--surface-overlay-hover);
+  border-color: rgb(124 92 255 / 0.35);
 }
 
 /* Tech / metadata capsule. */
@@ -135,12 +196,15 @@
   letter-spacing: 0.03em;
   white-space: nowrap;
   color: var(--color-on-surface-variant);
-  background-color: rgb(255 255 255 / 0.05);
-  border: 1px solid rgb(255 255 255 / 0.1);
-  transition: background-color 0.25s ease;
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
 }
 .tech-chip:hover {
-  background-color: rgb(255 255 255 / 0.1);
+  background-color: var(--surface-overlay-hover);
 }
 
 /* --------------------- Scroll-reveal (Doherty / motion) ------------------ */

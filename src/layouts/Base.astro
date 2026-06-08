@@ -12,11 +12,28 @@ const { title = site.title, description = site.description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Set theme before paint to avoid a flash of the wrong palette. -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "light" && t !== "dark") {
+            t = window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+          }
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#050507" />
@@ -40,16 +57,18 @@ const { title = site.title, description = site.description } = Astro.props;
     <!-- Ambient background: radial glows + grid + noise (fixed, behind all) -->
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
-        class="absolute -left-[10%] -top-[20%] h-[50%] w-[50%] rounded-full bg-[#7c5cff]/15 blur-[150px]"
+        class="absolute -left-[10%] -top-[20%] h-[50%] w-[50%] rounded-full blur-[150px]"
+        style="background-color:var(--glow-1)"
       >
       </div>
       <div
-        class="absolute -bottom-[10%] -right-[10%] h-[40%] w-[40%] rounded-full bg-[#22d3ee]/10 blur-[120px]"
+        class="absolute -bottom-[10%] -right-[10%] h-[40%] w-[40%] rounded-full blur-[120px]"
+        style="background-color:var(--glow-2)"
       >
       </div>
       <div
         class="absolute inset-0 opacity-[0.4]"
-        style="background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:42px 42px;"
+        style="background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:42px 42px;"
       >
       </div>
     </div>
@@ -79,6 +98,47 @@ const { title = site.title, description = site.description } = Astro.props;
         );
         els.forEach((el) => io.observe(el));
       }
+    </script>
+
+    <!-- Theme toggle: flip data-theme, persist choice, sync button icon/labels -->
+    <script>
+      const root = document.documentElement;
+
+      function syncToggles() {
+        const isLight = root.getAttribute("data-theme") === "light";
+        document
+          .querySelectorAll<HTMLElement>("[data-theme-icon]")
+          .forEach((el) => {
+            el.textContent = isLight ? "dark_mode" : "light_mode";
+          });
+        document
+          .querySelectorAll<HTMLElement>("[data-theme-toggle]")
+          .forEach((btn) => {
+            btn.setAttribute(
+              "aria-label",
+              isLight ? "Switch to dark theme" : "Switch to light theme",
+            );
+            btn.setAttribute("aria-pressed", String(isLight));
+          });
+      }
+
+      syncToggles();
+
+      document
+        .querySelectorAll<HTMLElement>("[data-theme-toggle]")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next =
+              root.getAttribute("data-theme") === "light" ? "dark" : "light";
+            root.setAttribute("data-theme", next);
+            try {
+              localStorage.setItem("theme", next);
+            } catch (e) {
+              /* ignore storage failures (private mode, etc.) */
+            }
+            syncToggles();
+          });
+        });
     </script>
   </body>
 </html>

@@ -17,7 +17,7 @@ const year = 2026;
     </div>
     <div class="relative z-10 mx-auto max-w-2xl space-y-8">
       <h2
-        class="text-4xl font-black tracking-tight text-white md:text-6xl"
+        class="text-4xl font-black tracking-tight text-heading md:text-6xl"
       >
         Let's build something <span class="text-gradient">intelligent</span>.
       </h2>
@@ -35,15 +35,15 @@ const year = 2026;
         >
           <a
             href={`mailto:${site.email}`}
-            class="flex items-center gap-2 transition-colors hover:text-white"
+            class="flex items-center gap-2 transition-colors hover:text-heading"
           >
             <span class="material-symbols-outlined text-base">mail</span>
             {site.email}
           </a>
-          <span class="hidden h-4 w-px bg-white/15 sm:block"></span>
+          <span class="hidden h-4 w-px bg-overlay/15 sm:block"></span>
           <a
             href={site.phoneHref}
-            class="flex items-center gap-2 transition-colors hover:text-white"
+            class="flex items-center gap-2 transition-colors hover:text-heading"
           >
             <span class="material-symbols-outlined text-base">call</span>
             {site.phone}
@@ -55,11 +55,11 @@ const year = 2026;
 </section>
 
 <!-- Slim footer -->
-<footer class="relative z-10 mt-12 w-full border-t border-white/5 bg-[#050507]">
+<footer class="relative z-10 mt-12 w-full border-t border-overlay/5 bg-background">
   <div
     class="mx-auto flex max-w-(--container-screen) flex-col items-center justify-between gap-8 px-4 py-12 md:flex-row md:px-16"
   >
-    <div class="text-xl font-black tracking-tighter text-white">
+    <div class="text-xl font-black tracking-tighter text-heading">
       {site.brand}
     </div>
     <div class="text-sm font-light text-on-surface-variant">
@@ -70,7 +70,7 @@ const year = 2026;
         site.socials.map((s) => (
           <a
             href={s.href}
-            class="text-sm tracking-wide text-on-surface-variant transition-colors duration-300 hover:text-white"
+            class="text-sm tracking-wide text-on-surface-variant transition-colors duration-300 hover:text-heading"
           >
             {s.label}
           </a>

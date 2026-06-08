@@ -8,7 +8,8 @@ import NeuralVisual from "./NeuralVisual.astro";
 >
   <!-- Hero ambient glow -->
   <div
-    class="pointer-events-none absolute left-1/4 top-1/2 -z-10 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-primary/20 blur-[120px]"
+    class="pointer-events-none absolute left-1/4 top-1/2 -z-10 h-[600px] w-[600px] -translate-y-1/2 rounded-full blur-[120px]"
+    style="background-color:var(--glow-1)"
   >
   </div>
 
@@ -23,7 +24,7 @@ import NeuralVisual from "./NeuralVisual.astro";
           {site.role}
         </p>
         <h1
-          class="reveal text-5xl font-black leading-[1.05] tracking-tighter text-white drop-shadow-2xl md:text-7xl lg:text-[84px]"
+          class="reveal text-5xl font-black leading-[1.05] tracking-tighter text-heading drop-shadow-2xl md:text-7xl lg:text-[84px]"
           style="--reveal-delay:80ms"
         >
           {site.hero.headlineLead}<br />
@@ -54,8 +55,8 @@ import NeuralVisual from "./NeuralVisual.astro";
       </div>
     </div>
 
-    <!-- Visual -->
-    <div class="order-1 lg:order-2 lg:col-span-6">
+    <!-- Visual (desktop only — omitted on mobile to keep the hero text-first) -->
+    <div class="order-1 hidden lg:order-2 lg:col-span-6 lg:block">
       <div
         class="glass-card glass-card-hover relative overflow-hidden rounded-3xl p-6"
       >
@@ -66,13 +67,13 @@ import NeuralVisual from "./NeuralVisual.astro";
 
   <!-- Stats strip -->
   <div
-    class="reveal mt-20 grid grid-cols-2 gap-8 border-t border-white/10 pt-12 md:grid-cols-4"
+    class="reveal mt-20 grid grid-cols-2 gap-8 border-t border-overlay/10 pt-12 md:grid-cols-4"
     style="--reveal-delay:120ms"
   >
     {
       stats.map((s) => (
         <div class="space-y-2">
-          <div class="text-4xl font-black tracking-tight text-white md:text-5xl">
+          <div class="text-4xl font-black tracking-tight text-heading md:text-5xl">
             {s.value}
           </div>
           <div class="text-sm font-semibold uppercase tracking-wider text-on-surface-variant">

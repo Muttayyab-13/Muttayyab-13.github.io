@@ -84,7 +84,9 @@ const edges: [number, number][] = [
               cy={n.y}
               r={n.r}
               fill={n.core ? "url(#edgeGrad)" : "#cfe9ff"}
-              style={`animation: pulse-node ${
+              style={`${
+                n.core ? "" : "fill: var(--neural-node);"
+              }animation: pulse-node ${
                 3 + (i % 4)
               }s ease-in-out infinite; animation-delay:${(i % 5) * 0.4}s;`}
             />

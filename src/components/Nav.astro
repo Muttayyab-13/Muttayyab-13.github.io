@@ -3,7 +3,7 @@ import { site, navLinks } from "../data/site";
 ---
 
 <nav
-  class="fixed top-0 z-50 w-full border-b border-white/5 bg-[#050507]/80 shadow-xl backdrop-blur-xl"
+  class="fixed top-0 z-50 w-full border-b border-overlay/5 bg-background/80 shadow-xl backdrop-blur-xl"
 >
   <div
     class="mx-auto flex max-w-(--container-screen) items-center justify-between px-4 py-3 md:px-16"
@@ -12,7 +12,7 @@ import { site, navLinks } from "../data/site";
     <a href="#" class="group flex items-center gap-3">
       <span class="relative shrink-0">
         <span
-          class="flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-gradient-to-br from-primary/40 to-secondary/25 text-base font-black tracking-tight text-white shadow-[0_0_22px_rgba(124,92,255,0.4)] backdrop-blur transition-transform duration-300 group-hover:scale-105"
+          class="flex h-11 w-11 items-center justify-center rounded-xl border border-overlay/15 bg-gradient-to-br from-primary/40 to-secondary/25 text-base font-black tracking-tight text-white shadow-[0_0_22px_rgba(124,92,255,0.4)] backdrop-blur transition-transform duration-300 group-hover:scale-105"
         >
           {site.initials}
         </span>
@@ -20,14 +20,14 @@ import { site, navLinks } from "../data/site";
           site.available && (
             <span class="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span class="relative inline-flex h-3.5 w-3.5 rounded-full border-2 border-[#050507] bg-emerald-400" />
+              <span class="relative inline-flex h-3.5 w-3.5 rounded-full border-2 border-background bg-emerald-400" />
             </span>
           )
         }
       </span>
       <span class="flex flex-col leading-tight">
         <span
-          class="text-sm font-bold tracking-tight text-white md:text-base"
+          class="text-sm font-bold tracking-tight text-heading md:text-base"
         >
           {site.name}
         </span>
@@ -56,34 +56,50 @@ import { site, navLinks } from "../data/site";
       }
     </div>
 
-    <a
-      href="#contact"
-      class="hidden rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-white/20 md:inline-flex"
-    >
-      Hire Me
-    </a>
+    <!-- Right controls: theme toggle (always visible), Hire Me (desktop), menu (mobile) -->
+    <div class="flex items-center gap-2 md:gap-4">
+      <button
+        data-theme-toggle
+        type="button"
+        aria-label="Switch to light theme"
+        aria-pressed="false"
+        class="flex h-10 w-10 items-center justify-center rounded-full border border-overlay/15 bg-overlay/5 text-on-surface transition-colors duration-300 hover:bg-overlay/10 hover:text-heading"
+      >
+        <span class="material-symbols-outlined text-[20px]" data-theme-icon>
+          light_mode
+        </span>
+      </button>
 
-    <!-- Mobile toggle -->
-    <button
-      id="menu-toggle"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      class="text-on-surface md:hidden"
-    >
-      <span class="material-symbols-outlined">menu</span>
-    </button>
+      <a
+        href="#contact"
+        class="hidden rounded-full border border-overlay/20 bg-overlay/10 px-6 py-2 text-sm font-medium text-heading transition-all duration-300 hover:bg-overlay/20 md:inline-flex"
+      >
+        Hire Me
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        class="text-on-surface md:hidden"
+      >
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="hidden flex-col gap-1 border-t border-white/5 bg-[#050507]/95 px-4 py-4 backdrop-blur-xl md:hidden"
+    class="hidden flex-col gap-1 border-t border-overlay/5 bg-background/95 px-4 py-4 backdrop-blur-xl md:hidden"
   >
     {
       navLinks.map((link) => (
         <a
           href={link.href}
-          class="rounded-lg px-3 py-3 text-base text-on-surface-variant transition-colors hover:bg-white/5 hover:text-white"
+          class="rounded-lg px-3 py-3 text-base text-on-surface-variant transition-colors hover:bg-overlay/5 hover:text-heading"
           data-mobile-link
         >
           {link.label}
@@ -93,7 +109,7 @@ import { site, navLinks } from "../data/site";
     <a
       href="#contact"
       data-mobile-link
-      class="mt-2 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-center text-sm font-medium text-white"
+      class="mt-2 rounded-full border border-overlay/20 bg-overlay/10 px-6 py-3 text-center text-sm font-medium text-heading"
     >
       Hire Me
     </a>
