@@ -17,6 +17,7 @@ pnpm-debug.log*
 # local tooling / agent config
 .claude/
 CLAUDE.md
+docs/superpowers/
 
 # private / source artifacts (kept locally, not published)
 *.pdf

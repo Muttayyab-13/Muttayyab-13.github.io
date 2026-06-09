@@ -66,6 +66,14 @@ const year = 2026;
       © {year} {site.brand}. Built for the future of intelligence.
     </div>
     <div class="flex gap-8">
+      <a
+        href={site.resumeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm tracking-wide text-on-surface-variant transition-colors duration-300 hover:text-heading"
+      >
+        Resume
+      </a>
       {
         site.socials.map((s) => (
           <a

@@ -6,6 +6,9 @@
 const GITHUB = "https://github.com/Muttayyab-13";
 const LINKEDIN = "https://www.linkedin.com/in/muttayyab";
 const EMAIL = "muttayyab13@gmail.com";
+// Résumé is hosted externally (not committed). Replace with the real Drive/Dropbox
+// share link — buttons open it in a new tab.
+const RESUME_URL = "https://drive.google.com/REPLACE_ME"; // TODO: paste real link
 
 export const site = {
   brand: "MUTTAYYAB.AI",
@@ -20,6 +23,7 @@ export const site = {
   email: EMAIL,
   phone: "+92 305 5549222",
   phoneHref: "tel:+923055549222",
+  resumeUrl: RESUME_URL,
   hero: {
     headlineLead: "Architecting",
     headlineAccent: "Intelligent",
@@ -86,6 +90,22 @@ export const capabilities: Capability[] = [
   },
 ];
 
+// Full case-study content for a project. Optional — only projects with this get
+// their own /work/<slug> page. Source of truth for src/pages/work/[slug].astro.
+export type CaseStudy = {
+  tagline: string;
+  isPrivate?: boolean; // true → "Private project" badge, no repo/demo links
+  problem: string;
+  role: string;
+  architecture: { intro: string; steps: { title: string; body: string }[] };
+  techStack: { group: string; items: string[] }[];
+  features: { icon: string; title: string; body: string }[];
+  results: { value: string; label: string }[];
+  challenges: { title: string; body: string }[];
+  // src may be "" → render a framed placeholder until an image is dropped in.
+  screenshots: { src: string; caption: string }[];
+};
+
 export type Project = {
   icon: string;
   title: string;
@@ -95,6 +115,8 @@ export type Project = {
   featured?: boolean;
   size: "featured" | "tall" | "small";
   accent: "primary" | "secondary" | "tertiary";
+  slug?: string; // when set (with caseStudy), card links to /work/<slug>
+  caseStudy?: CaseStudy;
 };
 
 export const projects: Project[] = [
@@ -103,10 +125,101 @@ export const projects: Project[] = [
     title: "AI Document Extraction Pipeline",
     body: "Enterprise document-processing pipeline combining OCR (PaddleOCR, AWS Textract) with LLM APIs and multi-stage routing to extract structured data from invoices and forms — cutting manual workload by 70%.",
     tags: ["Python", "AWS Textract", "PaddleOCR", "LLMs"],
-    href: GITHUB,
+    href: "/work/ai-document-extraction",
     featured: true,
     size: "featured",
     accent: "primary",
+    slug: "ai-document-extraction",
+    caseStudy: {
+      tagline:
+        "Turning messy invoices and forms into clean, structured JSON — and cutting manual data entry by 70%.",
+      isPrivate: true,
+      problem:
+        "Back-office teams were keying data out of thousands of invoices, receipts and forms by hand — slow, expensive and error-prone. Documents arrived in wildly inconsistent layouts (scans, phone photos, native PDFs), so naïve template-based OCR broke constantly. The business needed a pipeline that could read almost any document and return reliable, structured fields with minimal human review.",
+      role: "I designed and built the end-to-end extraction pipeline: document ingestion, the OCR and LLM extraction stages, the multi-stage routing logic, a strict structured-output schema, and the validation and confidence-scoring layer that decides when a result needs a human's eyes.",
+      architecture: {
+        intro:
+          "A multi-stage pipeline that routes each document down the cheapest path that still hits the accuracy bar — fast OCR for clean documents, heavier vision-language extraction for the hard ones — then validates and emits structured JSON.",
+        steps: [
+          {
+            title: "Ingest & classify",
+            body: "Accept PDF and image uploads, then detect document type and scan quality to pick a processing path.",
+          },
+          {
+            title: "OCR layer",
+            body: "PaddleOCR for general text; AWS Textract for tables, forms and key-value pairs.",
+          },
+          {
+            title: "Multi-stage routing",
+            body: "Route by document type and OCR confidence to the right extractor, escalating low-confidence pages to a heavier LLM / vision-language pass.",
+          },
+          {
+            title: "LLM extraction",
+            body: "Prompt LLM APIs to map raw OCR text into a strict field schema, returning structured JSON.",
+          },
+          {
+            title: "Validation & confidence scoring",
+            body: "Sanity-check fields (totals, dates, required keys) and flag low-confidence results for human review.",
+          },
+          {
+            title: "Structured output",
+            body: "Emit normalized, validated JSON to the downstream system and database.",
+          },
+        ],
+      },
+      techStack: [
+        { group: "AI / OCR", items: ["PaddleOCR", "AWS Textract", "LLM APIs", "Vision-Language Models"] },
+        { group: "Backend", items: ["Python", "FastAPI"] },
+        { group: "Infra", items: ["AWS", "Docker"] },
+      ],
+      features: [
+        {
+          icon: "dashboard_customize",
+          title: "Layout-agnostic extraction",
+          body: "Handles inconsistent invoices, receipts and forms without maintaining a template per vendor.",
+        },
+        {
+          icon: "fact_check",
+          title: "Confidence-based human-in-the-loop",
+          body: "Only low-confidence results are routed to a person, so reviewers spend time where it matters.",
+        },
+        {
+          icon: "data_object",
+          title: "Strict structured output",
+          body: "Every document maps to a validated JSON schema instead of free-form text.",
+        },
+        {
+          icon: "route",
+          title: "Cost-aware routing",
+          body: "A cheap OCR path for easy documents; LLM and vision passes only when they're actually needed.",
+        },
+      ],
+      results: [
+        { value: "70%", label: "Manual data entry eliminated" },
+        { value: "Structured JSON", label: "Every document, one schema" },
+        { value: "Human-in-loop", label: "Only low-confidence docs reviewed" },
+      ],
+      challenges: [
+        {
+          title: "Wildly inconsistent layouts",
+          body: "Solved with type/confidence routing plus an LLM fallback instead of brittle per-vendor templates.",
+        },
+        {
+          title: "LLM hallucination & wrong fields",
+          body: "Constrained the model to a strict schema and added validation plus confidence scoring on top.",
+        },
+        {
+          title: "Cost & latency",
+          body: "Balanced OCR against LLM passes so easy documents stay cheap and fast, reserving heavy models for hard pages.",
+        },
+      ],
+      screenshots: [
+        { src: "", caption: "Upload & ingestion view" },
+        { src: "", caption: "Extraction results — structured JSON" },
+        { src: "", caption: "Confidence flags & review queue" },
+        { src: "", caption: "Pipeline architecture diagram" },
+      ],
+    },
   },
   {
     icon: "manage_search",
@@ -137,6 +250,13 @@ export const projects: Project[] = [
   },
 ];
 
+// Projects that have a full case-study page. Drives getStaticPaths in
+// src/pages/work/[slug].astro — add a caseStudy to a project and it appears here.
+export const caseStudies = projects.filter(
+  (p): p is Project & { slug: string; caseStudy: NonNullable<Project["caseStudy"]> } =>
+    Boolean(p.slug && p.caseStudy),
+);
+
 export const about = {
   heading: "The Engineer",
   bio: "I'm Muttayyab — a Software Engineering graduate and AI Engineer specializing in LLMs, the Model Context Protocol, computer vision and OCR. I build intelligent document pipelines, RAG systems and n8n automation workflows, and ship scalable full-stack products with the MERN stack. I've reviewed model-generated code for Anthropic (via Revelo) and currently engineer AI systems at Merchaint, Singapore. Off the keyboard, I've competed as a national-level squash player.",
@@ -164,9 +284,10 @@ export const about = {
   ],
 };
 
+// Root-relative anchors so the nav also works from sub-pages (e.g. /work/<slug>).
 export const navLinks = [
-  { label: "Work", href: "#work" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work", href: "/#work" },
+  { label: "Capabilities", href: "/#capabilities" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ] as const;

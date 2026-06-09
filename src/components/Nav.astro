@@ -71,7 +71,17 @@ import { site, navLinks } from "../data/site";
       </button>
 
       <a
-        href="#contact"
+        href={site.resumeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden items-center gap-1.5 rounded-full border border-overlay/15 bg-overlay/5 px-5 py-2 text-sm font-medium text-on-surface transition-all duration-300 hover:bg-overlay/10 hover:text-heading md:inline-flex"
+      >
+        <span class="material-symbols-outlined text-[18px]">download</span>
+        Resume
+      </a>
+
+      <a
+        href="/#contact"
         class="hidden rounded-full border border-overlay/20 bg-overlay/10 px-6 py-2 text-sm font-medium text-heading transition-all duration-300 hover:bg-overlay/20 md:inline-flex"
       >
         Hire Me
@@ -107,9 +117,19 @@ import { site, navLinks } from "../data/site";
       ))
     }
     <a
-      href="#contact"
+      href={site.resumeUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       data-mobile-link
-      class="mt-2 rounded-full border border-overlay/20 bg-overlay/10 px-6 py-3 text-center text-sm font-medium text-heading"
+      class="mt-2 flex items-center justify-center gap-1.5 rounded-full border border-overlay/15 bg-overlay/5 px-6 py-3 text-center text-sm font-medium text-on-surface"
+    >
+      <span class="material-symbols-outlined text-[18px]">download</span>
+      Resume
+    </a>
+    <a
+      href="/#contact"
+      data-mobile-link
+      class="rounded-full border border-overlay/20 bg-overlay/10 px-6 py-3 text-center text-sm font-medium text-heading"
     >
       Hire Me
     </a>

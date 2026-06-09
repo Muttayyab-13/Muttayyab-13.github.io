@@ -207,6 +207,24 @@
   background-color: var(--surface-overlay-hover);
 }
 
+/* Small uppercase section label (case-study pages). */
+.section-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+/* Readable body paragraph (case-study prose). */
+.prose-body {
+  font-size: 1.0625rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-on-surface-variant);
+}
+
 /* --------------------- Scroll-reveal (Doherty / motion) ------------------ */
 .reveal {
   opacity: 0;
