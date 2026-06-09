@@ -6,9 +6,11 @@
 const GITHUB = "https://github.com/Muttayyab-13";
 const LINKEDIN = "https://www.linkedin.com/in/muttayyab";
 const EMAIL = "muttayyab13@gmail.com";
-// Résumé is hosted externally (not committed). Replace with the real Drive/Dropbox
-// share link — buttons open it in a new tab.
-const RESUME_URL = "https://drive.google.com/REPLACE_ME"; // TODO: paste real link
+// Résumé is hosted externally (not committed) — buttons open it in a new tab.
+// Google Drive preview link (sharing: "Anyone with the link"). To swap the file,
+// upload a new one, share it, and paste its /view link here.
+const RESUME_URL =
+  "https://drive.google.com/file/d/1ErXTChoqvMNcfro-bhmI9qDEx5JwQFrb/view?usp=sharing";
 
 export const site = {
   brand: "MUTTAYYAB.AI",
