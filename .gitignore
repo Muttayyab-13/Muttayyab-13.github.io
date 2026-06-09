@@ -20,7 +20,5 @@ CLAUDE.md
 docs/superpowers/
 
 # private / source artifacts (kept locally, not published)
+.local/
 *.pdf
-code.html
-screen.png
-DESIGN.md
