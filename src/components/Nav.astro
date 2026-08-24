@@ -40,7 +40,7 @@ import { site, navLinks } from "../data/site";
     </a>
 
     <!-- Desktop links -->
-    <div class="hidden items-center gap-8 md:flex">
+    <div class="hidden items-center gap-6 lg:flex xl:gap-8">
       {
         navLinks.map((link, i) => (
           <a
@@ -74,7 +74,7 @@ import { site, navLinks } from "../data/site";
         href={site.resumeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden items-center gap-1.5 rounded-full border border-overlay/15 bg-overlay/5 px-5 py-2 text-sm font-medium text-on-surface transition-all duration-300 hover:bg-overlay/10 hover:text-heading md:inline-flex"
+        class="hidden items-center gap-1.5 rounded-full border border-overlay/15 bg-overlay/5 px-5 py-2 text-sm font-medium text-on-surface transition-all duration-300 hover:bg-overlay/10 hover:text-heading lg:inline-flex"
       >
         <span class="material-symbols-outlined text-[18px]">download</span>
         Resume
@@ -82,7 +82,7 @@ import { site, navLinks } from "../data/site";
 
       <a
         href="/#contact"
-        class="hidden rounded-full border border-overlay/20 bg-overlay/10 px-6 py-2 text-sm font-medium text-heading transition-all duration-300 hover:bg-overlay/20 md:inline-flex"
+        class="hidden rounded-full border border-overlay/20 bg-overlay/10 px-6 py-2 text-sm font-medium text-heading transition-all duration-300 hover:bg-overlay/20 lg:inline-flex"
       >
         Hire Me
       </a>
@@ -93,7 +93,7 @@ import { site, navLinks } from "../data/site";
         type="button"
         aria-label="Toggle menu"
         aria-expanded="false"
-        class="text-on-surface md:hidden"
+        class="text-on-surface lg:hidden"
       >
         <span class="material-symbols-outlined">menu</span>
       </button>
@@ -103,7 +103,7 @@ import { site, navLinks } from "../data/site";
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="hidden flex-col gap-1 border-t border-overlay/5 bg-background/95 px-4 py-4 backdrop-blur-xl md:hidden"
+    class="hidden flex-col gap-1 border-t border-overlay/5 bg-background/95 px-4 py-4 backdrop-blur-xl lg:hidden"
   >
     {
       navLinks.map((link) => (

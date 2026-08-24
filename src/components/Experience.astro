@@ -1,0 +1,123 @@
+---
+import { experience } from "../data/site";
+import { accentText } from "../lib/accents";
+
+// Per-accent maps written out in full so Tailwind's JIT keeps the classes.
+const accentBorder = {
+  primary: "border-primary/50",
+  secondary: "border-secondary/50",
+  tertiary: "border-tertiary/50",
+};
+const accentDot = {
+  primary: "bg-primary",
+  secondary: "bg-secondary",
+  tertiary: "bg-tertiary",
+};
+const accentMarker = {
+  primary: "bg-primary/60",
+  secondary: "bg-secondary/60",
+  tertiary: "bg-tertiary/60",
+};
+---
+
+<section
+  id="experience"
+  class="relative z-10 mx-auto max-w-(--container-screen) overflow-x-clip px-4 py-24 md:px-16"
+>
+  <div
+    class="pointer-events-none absolute left-0 top-1/3 -z-10 h-[500px] w-[500px] rounded-full blur-[150px]"
+    style="background-color:var(--glow-1)"
+  >
+  </div>
+
+  <div class="reveal mb-16">
+    <h2 class="text-4xl font-black tracking-tight text-heading md:text-5xl">
+      Experience
+    </h2>
+    <p class="mt-4 max-w-2xl text-lg font-light text-on-surface-variant">
+      Production AI inside a commercial financial platform, model evaluation for
+      Anthropic, and full-stack work before both.
+    </p>
+  </div>
+
+  <ol
+    class="relative before:absolute before:bottom-2 before:left-[7px] before:top-2 before:w-px before:bg-overlay/15"
+  >
+    {
+      experience.map((role, i) => (
+        <li
+          class="reveal relative pb-14 pl-8 last:pb-0 md:pl-12"
+          style={`--reveal-delay:${i * 90}ms`}
+        >
+          {/* Timeline node */}
+          <span
+            class:list={[
+              "absolute left-0 top-1.5 flex h-[15px] w-[15px] items-center justify-center rounded-full border-2 bg-background",
+              accentBorder[role.accent],
+            ]}
+            aria-hidden="true"
+          >
+            {role.current && (
+              <span
+                class:list={[
+                  "h-[7px] w-[7px] animate-pulse rounded-full",
+                  accentDot[role.accent],
+                ]}
+              />
+            )}
+          </span>
+
+          {/* Header */}
+          <div class="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-6">
+            <div>
+              <h3 class="text-xl font-bold tracking-tight text-heading md:text-2xl">
+                {role.company}
+                <span class="ml-2 text-sm font-normal text-on-surface-variant">
+                  {role.location}
+                </span>
+              </h3>
+              <p
+                class:list={[
+                  "mt-1 text-base font-semibold",
+                  accentText[role.accent],
+                ]}
+              >
+                {role.title}
+              </p>
+            </div>
+
+            <div class="flex shrink-0 flex-wrap items-center gap-3">
+              <span class="tech-chip">{role.type}</span>
+              <span class="text-sm font-medium tracking-wide text-on-surface-variant">
+                {role.start} – {role.end}
+              </span>
+            </div>
+          </div>
+
+          {/* Bullets */}
+          <ul class="mt-5 space-y-3">
+            {role.bullets.map((b) => (
+              <li class="relative pl-5 text-base font-light leading-relaxed text-on-surface-variant">
+                <span
+                  class:list={[
+                    "absolute left-0 top-[0.7em] h-px w-3",
+                    accentMarker[role.accent],
+                  ]}
+                  aria-hidden="true"
+                />
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          {/* Stack */}
+          <div class="mt-5 flex flex-wrap gap-2">
+            {role.stack.map((t) => (
+              <span class="tech-chip bg-background/50 text-[11px]">{t}</span>
+            ))}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

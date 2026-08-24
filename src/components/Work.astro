@@ -14,7 +14,7 @@ const accentShadow = {
 };
 
 const featured = projects.find((p) => p.size === "featured");
-const tall = projects.find((p) => p.size === "tall");
+const talls = projects.filter((p) => p.size === "tall");
 const smalls = projects.filter((p) => p.size === "small");
 ---
 
@@ -79,8 +79,11 @@ const smalls = projects.filter((p) => p.size === "small");
 
     <!-- Tall -->
     {
-      tall && (
-        <div class="glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl p-8 md:row-span-2 md:p-10">
+      talls.map((tall, i) => (
+        <div
+          class="glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl p-8 md:row-span-2 md:p-10"
+          style={`--reveal-delay:${i * 80}ms`}
+        >
           <div class="absolute inset-0 z-0 bg-gradient-to-b from-secondary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <div class="z-10 flex h-full flex-1 flex-col">
             <div class="mb-8 flex items-start justify-between">
@@ -127,7 +130,7 @@ const smalls = projects.filter((p) => p.size === "small");
             </div>
           </div>
         </div>
-      )
+      ))
     }
 
     <!-- Small cards -->
