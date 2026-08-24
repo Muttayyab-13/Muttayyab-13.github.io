@@ -234,7 +234,7 @@ export const projects: Project[] = [
       cta: {
         lead: "Interested in",
         accentWord: "document-AI",
-        tail: "work?",
+        tail: " work?",
         body: "I build pipelines like this end to end. Let's talk about yours.",
       },
     },
@@ -443,7 +443,7 @@ export const projects: Project[] = [
       cta: {
         lead: "Need a",
         accentWord: "multi-agent",
-        tail: "workflow?",
+        tail: " workflow?",
         body: "Conditional routing, human-in-the-loop and agents that check their own work — I build these end to end.",
       },
     },
