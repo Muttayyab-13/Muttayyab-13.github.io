@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
+import RomaSubPipeline from "../../components/diagrams/RomaSubPipeline.astro";
 import { site, caseStudies } from "../../data/site";
 
 export function getStaticPaths() {
@@ -74,6 +75,24 @@ const pageDescription = cs.tagline;
         <div class="mt-8 flex flex-wrap gap-2">
           {project.tags.map((t) => <span class="tech-chip">{t}</span>)}
         </div>
+
+        {
+          cs.links && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {cs.links.map((l) => (
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-ghost"
+                >
+                  <span class="material-symbols-outlined">{l.icon}</span>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          )
+        }
       </header>
 
       <!-- ───────────── Problem / Role ───────────── -->
@@ -117,6 +136,20 @@ const pageDescription = cs.tagline;
           }
         </ol>
       </section>
+
+      <!-- ───────────── Pipeline diagram (opt-in per case study) ───────────── -->
+      {
+        cs.diagram === "romasub-pipeline" && (
+          <section class="reveal mt-20 md:mt-28">
+            <h2 class="text-3xl font-black tracking-tight text-heading md:text-4xl">
+              Pipeline
+            </h2>
+            <div class="glass-card mt-8 overflow-x-auto rounded-2xl p-6 md:p-10">
+              <RomaSubPipeline />
+            </div>
+          </section>
+        )
+      }
 
       <!-- ───────────── Tech Stack ───────────── -->
       <section class="reveal mt-20 md:mt-28">
@@ -210,23 +243,28 @@ const pageDescription = cs.tagline;
         </div>
       </section>
 
-      <!-- ───────────── Screenshots ───────────── -->
-      <section class="reveal mt-20 md:mt-28">
-        <h2 class="text-3xl font-black tracking-tight text-heading md:text-4xl">
-          Screenshots
-        </h2>
-        <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <!-- ───────────── Screenshots (skipped when none supplied) ───────────── -->
+      {
+        cs.screenshots.length > 0 && (
+          <section class="reveal mt-20 md:mt-28">
+            <h2 class="text-3xl font-black tracking-tight text-heading md:text-4xl">
+              Screenshots
+            </h2>
+            <div class="mt-8 grid gap-6 md:grid-cols-2">
           {
             cs.screenshots.map((shot) =>
               shot.src ? (
                 <figure class="glass-card overflow-hidden rounded-2xl">
-                  <img
-                    src={shot.src}
-                    alt={shot.caption}
-                    loading="lazy"
-                    class="aspect-video w-full object-cover"
-                  />
-                  <figcaption class="px-5 py-3 text-sm text-on-surface-variant">
+                  <div class="flex items-center justify-center bg-overlay/5 p-3">
+                    <img
+                      src={shot.src}
+                      alt={shot.caption}
+                      loading="lazy"
+                      decoding="async"
+                      class="max-h-[420px] w-full rounded-lg object-contain"
+                    />
+                  </div>
+                  <figcaption class="border-t border-overlay/10 px-5 py-3 text-sm text-on-surface-variant">
                     {shot.caption}
                   </figcaption>
                 </figure>
@@ -247,8 +285,10 @@ const pageDescription = cs.tagline;
               ),
             )
           }
-        </div>
-      </section>
+            </div>
+          </section>
+        )
+      }
 
       <!-- ───────────── Bottom CTA ───────────── -->
       <section
@@ -260,10 +300,11 @@ const pageDescription = cs.tagline;
         >
         </div>
         <h2 class="relative z-10 text-3xl font-black tracking-tight text-heading md:text-4xl">
-          Interested in <span class="text-gradient">document-AI</span> work?
+          {cs.cta.lead} <span class="text-gradient">{cs.cta.accentWord}</span>{" "}
+          {cs.cta.tail}
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-base font-light text-on-surface-variant">
-          I build pipelines like this end to end. Let's talk about yours.
+          {cs.cta.body}
         </p>
         <div
           class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row"

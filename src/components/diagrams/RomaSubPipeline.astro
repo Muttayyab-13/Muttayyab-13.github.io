@@ -1,0 +1,169 @@
+---
+// Seven-layer Urdu → Roman Urdu transliteration pipeline.
+// Colours come from the theme tokens (--color-primary / --color-secondary /
+// currentColor) so the diagram re-themes with the rest of the site rather than
+// baking in brand hex codes.
+const stages = [
+  { n: "01", title: "Whisper ASR", note: "Urdu speech → Urdu text" },
+  { n: "02", title: "Loanword & Name Bypass", note: "1,041 words · 189 names" },
+  { n: "03", title: "Normalization", note: "consistent model input" },
+  { n: "04", title: "Fine-tuned M2M100", note: "Urdu → Roman Urdu" },
+  { n: "05", title: "Reconstruction", note: "splice bypassed terms back" },
+  { n: "06", title: "Fuzzy Correction", note: "repair near-miss spellings" },
+  { n: "07", title: "Claude Haiku", note: "optional refinement" },
+];
+
+// Layout constants — one column per stage.
+const boxW = 168;
+const boxH = 96;
+const gapX = 32;
+const padX = 8;
+const padY = 56;
+const width = padX * 2 + stages.length * boxW + (stages.length - 1) * gapX;
+const height = padY + boxH + 92;
+const xOf = (i: number) => padX + i * (boxW + gapX);
+---
+
+<svg
+  viewBox={`0 0 ${width} ${height}`}
+  class="h-auto w-full min-w-[900px]"
+  role="img"
+  aria-labelledby="romasub-pipeline-title romasub-pipeline-desc"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="romasub-pipeline-title">
+    RomaSub.AI seven-layer transliteration pipeline
+  </title>
+  <desc id="romasub-pipeline-desc">
+    Audio flows through Whisper ASR, a loanword and proper-noun bypass, text
+    normalization, a fine-tuned M2M100 transliteration model, reconstruction of
+    the bypassed terms, fuzzy correction, and an optional Claude Haiku
+    refinement pass, producing time-aligned Roman Urdu captions.
+  </desc>
+
+  <defs>
+    <linearGradient id="romasub-flow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="var(--color-primary)"></stop>
+      <stop offset="100%" stop-color="var(--color-secondary)"></stop>
+    </linearGradient>
+    <marker
+      id="romasub-arrow"
+      viewBox="0 0 10 10"
+      refX="9"
+      refY="5"
+      markerWidth="6"
+      markerHeight="6"
+      orient="auto-start-reverse"
+    >
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="url(#romasub-flow)"></path>
+    </marker>
+  </defs>
+
+  <!-- Input / output rail labels -->
+  <text
+    x={padX}
+    y="22"
+    class="fill-on-surface-variant text-[11px] font-semibold uppercase tracking-[0.18em]"
+  >
+    Urdu audio in
+  </text>
+  <text
+    x={width - padX}
+    y="22"
+    text-anchor="end"
+    class="fill-on-surface-variant text-[11px] font-semibold uppercase tracking-[0.18em]"
+  >
+    Roman Urdu captions out
+  </text>
+
+  {
+    stages.map((s, i) => {
+      const x = xOf(i);
+      const optional = i === stages.length - 1;
+      return (
+        <>
+          {/* connector into this stage */}
+          {i > 0 && (
+            <line
+              x1={x - gapX + 6}
+              y1={padY + boxH / 2}
+              x2={x - 8}
+              y2={padY + boxH / 2}
+              stroke="url(#romasub-flow)"
+              stroke-width="1.5"
+              stroke-dasharray={optional ? "4 4" : undefined}
+              marker-end="url(#romasub-arrow)"
+            />
+          )}
+
+          {/* stage card */}
+          <rect
+            x={x}
+            y={padY}
+            width={boxW}
+            height={boxH}
+            rx="14"
+            class="fill-overlay/5 stroke-overlay/20"
+            stroke-width="1"
+            stroke-dasharray={optional ? "5 4" : undefined}
+          />
+
+          <text
+            x={x + 16}
+            y={padY + 26}
+            class="text-[11px] font-bold tabular-nums tracking-[0.14em]"
+            fill="var(--color-primary)"
+          >
+            {s.n}
+          </text>
+
+          <text
+            x={x + 16}
+            y={padY + 52}
+            class="fill-heading text-[13px] font-bold"
+          >
+            {s.title.length > 20 ? s.title.split(" ")[0] : s.title}
+          </text>
+          {s.title.length > 20 && (
+            <text
+              x={x + 16}
+              y={padY + 68}
+              class="fill-heading text-[13px] font-bold"
+            >
+              {s.title.split(" ").slice(1).join(" ")}
+            </text>
+          )}
+
+          <text
+            x={x + 16}
+            y={padY + (s.title.length > 20 ? 86 : 74)}
+            class="fill-on-surface-variant text-[10.5px] font-light"
+          >
+            {s.note}
+          </text>
+        </>
+      );
+    })
+  }
+
+  <!-- Fallback rail: every stage degrades rather than failing the request -->
+  <line
+    x1={padX + 12}
+    y1={padY + boxH + 40}
+    x2={width - padX - 12}
+    y2={padY + boxH + 40}
+    stroke="var(--color-secondary)"
+    stroke-width="1"
+    stroke-dasharray="3 5"
+    opacity="0.45"></line>
+  <text
+    x={width / 2}
+    y={padY + boxH + 62}
+    text-anchor="middle"
+    class="fill-on-surface-variant text-[11px] font-medium"
+  >
+    Every layer has a defined fallback — a failure downgrades output quality
+    instead of losing the caption
+  </text>
+</svg>

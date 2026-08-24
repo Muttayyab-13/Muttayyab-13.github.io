@@ -88,7 +88,7 @@ export const capabilities: Capability[] = [
   {
     icon: "code_blocks",
     title: "Full-Stack Products",
-    body: "End-to-end delivery from scalable FastAPI / Node backends to responsive, accessible React interfaces — shipped, deployed and maintainable.",
+    body: "End-to-end delivery from scalable FastAPI / Node backends to responsive, accessible React interfaces. A software engineering degree behind it — requirements pinned down first, architecture that absorbs change, and code the next person can actually maintain.",
     accent: "secondary",
     span: "md:col-span-2",
     chips: ["React", "Node.js", "MongoDB", "FastAPI", "Docker"],
