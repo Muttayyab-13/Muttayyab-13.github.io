@@ -128,6 +128,37 @@
   box-shadow: var(--glass-shadow-hover);
 }
 
+/* ---------------------- Whole-card click target -------------------------
+   A card is a single link: .card-link stretches its hit area over the whole
+   .card-surface. One tab stop per card, the full surface is clickable, and
+   the accessible name still comes from the real anchor.
+------------------------------------------------------------------------- */
+.card-surface {
+  cursor: pointer;
+}
+
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
+}
+
+/* Keyboard focus lands on the anchor — ring the whole card instead. */
+.card-surface:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+.card-surface:focus-within .card-link:focus-visible {
+  outline: none;
+}
+
+/* Hovering anywhere on the card should read as hovering the link. */
+.card-surface:hover .card-link {
+  color: var(--color-secondary);
+}
+
 /* Violet → cyan text gradient. */
 .text-gradient {
   background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));

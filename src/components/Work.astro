@@ -16,6 +16,15 @@ const accentShadow = {
 const featured = projects.find((p) => p.size === "featured");
 const talls = projects.filter((p) => p.size === "tall");
 const smalls = projects.filter((p) => p.size === "small");
+
+// Headline metrics for the featured card's visual area. The project is private,
+// so there are no screenshots — the outcome fills the space instead.
+const featuredResults = featured?.caseStudy?.results.slice(0, 3) ?? [];
+
+// Every card is one link covering its whole surface (see .card-link in
+// global.css). One tab stop per card, one consistent label.
+const CARD =
+  "card-surface glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl";
 ---
 
 <section
@@ -27,10 +36,23 @@ const smalls = projects.filter((p) => p.size === "small");
   >
   </div>
 
-  <div class="reveal mb-16">
+  <div class="reveal mb-6">
     <h2 class="text-4xl font-black tracking-tight text-heading md:text-5xl">
       Selected Work
     </h2>
+    <p class="mt-4 max-w-2xl text-lg font-light text-on-surface-variant">
+      Five projects, each with a full write-up — the problem, the architecture,
+      what broke, and what it produced.
+    </p>
+  </div>
+
+  <div
+    class="mb-12 flex items-center gap-2 text-sm font-medium text-on-surface-variant"
+  >
+    <span class="material-symbols-outlined text-base text-primary"
+      >touch_app</span
+    >
+    Every card opens a case study
   </div>
 
   <div
@@ -39,15 +61,33 @@ const smalls = projects.filter((p) => p.size === "small");
     <!-- Featured -->
     {
       featured && (
-        <div class="glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl md:col-span-2 md:row-span-2">
+        <article class={`${CARD} md:col-span-2 md:row-span-2`}>
           <div class="absolute inset-0 z-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-50 transition-opacity duration-700 group-hover:opacity-80" />
-          <div class="relative z-10 h-[250px] w-full overflow-hidden p-6 md:h-1/2">
-            <div class="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-overlay/10 bg-background/40 backdrop-blur-md transition-colors duration-500 group-hover:border-overlay/30">
-              <span class="material-symbols-outlined text-7xl text-primary drop-shadow-[0_0_20px_rgba(124,92,255,0.8)] transition-transform duration-700 group-hover:scale-110">
+
+          {/* Visual area: large mark + the outcome, since this project is private */}
+          <div class="relative z-10 h-[250px] w-full shrink-0 overflow-hidden p-6 md:h-[280px]">
+            <div class="relative flex h-full w-full flex-col items-center justify-center gap-7 overflow-hidden rounded-2xl border border-overlay/10 bg-background/40 px-6 backdrop-blur-md transition-colors duration-500 group-hover:border-overlay/30">
+              <span class="material-symbols-outlined text-[92px] leading-none text-primary drop-shadow-[0_0_28px_rgba(124,92,255,0.75)] transition-transform duration-700 group-hover:scale-110">
                 {featured.icon}
               </span>
+
+              {featuredResults.length > 0 && (
+                <div class="grid w-full max-w-lg grid-cols-3 gap-4 border-t border-overlay/10 pt-5">
+                  {featuredResults.map((r) => (
+                    <div class="text-center">
+                      <div class="text-base font-black tracking-tight text-heading md:text-lg">
+                        {r.value}
+                      </div>
+                      <div class="mt-1 text-[10px] font-semibold uppercase leading-tight tracking-wider text-on-surface-variant">
+                        {r.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
+
           <div class="z-10 flex flex-1 flex-col justify-end bg-gradient-to-t from-background to-transparent p-8 md:p-10">
             <div class="mb-6 flex flex-wrap gap-2">
               <span class="tech-chip border-primary/30 bg-gradient-to-r from-primary/20 to-secondary/20 font-bold text-heading">
@@ -65,23 +105,24 @@ const smalls = projects.filter((p) => p.size === "small");
             </p>
             <a
               href={featured.href}
-              class="group/btn inline-flex w-fit items-center text-sm font-bold uppercase tracking-widest text-primary transition-colors hover:text-secondary"
+              aria-label={`View case study: ${featured.title}`}
+              class="card-link group/btn inline-flex w-fit items-center text-sm font-bold uppercase tracking-widest text-primary transition-colors hover:text-secondary"
             >
-              Explore Case Study
-              <span class="material-symbols-outlined ml-2 text-lg transition-transform group-hover/btn:translate-x-2">
+              View case study
+              <span class="material-symbols-outlined ml-2 text-lg transition-transform group-hover:translate-x-2">
                 arrow_forward
               </span>
             </a>
           </div>
-        </div>
+        </article>
       )
     }
 
     <!-- Tall -->
     {
-      talls.map((tall, i) => (
-        <div
-          class="glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl p-8 md:row-span-2 md:p-10"
+      talls.map((p, i) => (
+        <article
+          class={`${CARD} p-8 md:row-span-2 md:p-10`}
           style={`--reveal-delay:${i * 80}ms`}
         >
           <div class="absolute inset-0 z-0 bg-gradient-to-b from-secondary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -90,54 +131,55 @@ const smalls = projects.filter((p) => p.size === "small");
               <div
                 class:list={[
                   "flex h-14 w-14 items-center justify-center rounded-2xl border",
-                  accentBox[tall.accent],
+                  accentBox[p.accent],
                 ]}
               >
                 <span
                   class:list={[
                     "material-symbols-outlined text-3xl",
-                    accentText[tall.accent],
-                    accentShadow[tall.accent],
+                    accentText[p.accent],
+                    accentShadow[p.accent],
                   ]}
                 >
-                  {tall.icon}
+                  {p.icon}
                 </span>
               </div>
             </div>
             <div class="mt-auto">
               <h3 class="mb-4 text-2xl font-bold tracking-tight text-heading">
-                {tall.title}
+                {p.title}
               </h3>
               <p class="mb-6 text-base font-light leading-relaxed text-on-surface-variant">
-                {tall.body}
+                {p.body}
               </p>
-              {tall.tags.length > 0 && (
+              {p.tags.length > 0 && (
                 <div class="mb-8 flex flex-wrap gap-2">
-                  {tall.tags.map((t) => (
+                  {p.tags.map((t) => (
                     <span class="tech-chip bg-background/50">{t}</span>
                   ))}
                 </div>
               )}
               <a
-                href={tall.href}
-                class="group/btn inline-flex w-fit items-center text-sm font-medium uppercase tracking-wider text-heading transition-colors hover:text-secondary"
+                href={p.href}
+                aria-label={`View case study: ${p.title}`}
+                class="card-link group/btn inline-flex w-fit items-center text-sm font-bold uppercase tracking-wider text-primary transition-colors hover:text-secondary"
               >
-                Details
-                <span class="material-symbols-outlined ml-2 text-base transition-transform group-hover/btn:translate-x-1">
+                View case study
+                <span class="material-symbols-outlined ml-2 text-base transition-transform group-hover:translate-x-1">
                   arrow_forward
                 </span>
               </a>
             </div>
           </div>
-        </div>
+        </article>
       ))
     }
 
-    <!-- Small cards -->
+    <!-- Small: two per row on wide screens so the row never half-fills -->
     {
       smalls.map((p, i) => (
-        <div
-          class="glass-card glass-card-hover reveal group relative flex flex-col overflow-hidden rounded-3xl p-8"
+        <article
+          class={`${CARD} p-8 lg:col-span-2`}
           style={`--reveal-delay:${i * 80}ms`}
         >
           <div class="z-10 flex flex-1 flex-col">
@@ -160,27 +202,28 @@ const smalls = projects.filter((p) => p.size === "small");
             <h3 class="mb-3 text-xl font-bold tracking-tight text-heading">
               {p.title}
             </h3>
-            <p class="mb-5 text-sm font-light text-on-surface-variant">
+            <p class="mb-5 text-base font-light leading-relaxed text-on-surface-variant">
               {p.body}
             </p>
             {p.tags.length > 0 && (
               <div class="mb-6 flex flex-wrap gap-2">
                 {p.tags.map((t) => (
-                  <span class="tech-chip bg-background/50 text-[11px]">{t}</span>
+                  <span class="tech-chip bg-background/50">{t}</span>
                 ))}
               </div>
             )}
             <a
               href={p.href}
-              class="group/btn mt-auto inline-flex w-fit items-center text-xs font-medium uppercase tracking-wider text-heading transition-colors hover:text-primary"
+              aria-label={`View case study: ${p.title}`}
+              class="card-link group/btn mt-auto inline-flex w-fit items-center text-sm font-bold uppercase tracking-wider text-primary transition-colors hover:text-secondary"
             >
-              View
-              <span class="material-symbols-outlined ml-1 text-sm transition-transform group-hover/btn:translate-x-1">
+              View case study
+              <span class="material-symbols-outlined ml-1 text-base transition-transform group-hover:translate-x-1">
                 arrow_forward
               </span>
             </a>
           </div>
-        </div>
+        </article>
       ))
     }
   </div>
